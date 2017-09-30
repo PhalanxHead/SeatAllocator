@@ -1,7 +1,6 @@
 #!/etc/python3
 
 # *** IMPORTS ***
-from datetime import datetime
 from collections import defaultdict
 from math import ceil
 import csv
