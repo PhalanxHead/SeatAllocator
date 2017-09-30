@@ -10,7 +10,7 @@ A table allocator that (roughly) randomises the people on tables.
 2. Open a terminal in the same directory as `seats.py` and run the line:
 
    ```
-   $ python3 seats.py
+   $ python3 seatAllocator.py
    ```
 
 3. As per the prompt, enter the location of your list of names. My csv files are formatted as in the example `example.csv`, that is, (lastname, firstname) (other information is discarded), but you can edit the code to fit yours if you need. See **Modifying**
