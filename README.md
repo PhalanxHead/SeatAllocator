@@ -13,7 +13,7 @@ A table allocator that (roughly) randomises the people on tables.
    $ python3 seatAllocator.py
    ```
 
-3. As per the prompt, enter the location of your list of names. My csv files are formatted as in the example `example.csv`, that is, (lastname, firstname) (other information is discarded), but you can edit the code to fit yours if you need. See **Modifying**
+3. As per the prompt, enter the location of your list of names. My csv files are formatted as in the example `example.csv`, that is, (lastname, firstname) (other information is discarded), but you can edit the code to fit yours if you need. See **Config**
 
 4. As per the prompt, enter the name of the file you want to save the new lists in. By default, the program will create an output folder called "TableListings", and save into a file called "tables.csv" if no file is entered.
 
@@ -23,20 +23,24 @@ A table allocator that (roughly) randomises the people on tables.
 
 6. As per the prompt, enter some text as a seed for the allocation algorithm. The same seed should reproduce the same table allocation every time.
 
-### Modifying
+### Config
 
 Feel free to modify and reuse this code however you need. The code is fairly flexible IMO, simple changes could be made here:
 
-1. ​
-
+1.
 ```Python
-43 DEF_OUT = "TableListings/"
+34 DEF_OUT = "TableListings/"
 ```
 
 The right hand side here can be changed to wherever you want the output to be (don't stress if it doesn't exist, the program will generate it.)
 
 2.
+```Python
+43 OUT_MODE = 0
+```
+Changing this to a 1 will no longer write to a csv file, but simple print the output in the terminal.
 
+3.
 ```Python
 96 tableWriter.writerow(["Table Number"] + ["Student"] * MAX_SEATS)
 ```
