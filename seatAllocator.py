@@ -13,7 +13,7 @@ Purpose:    Takes a csv file of names (Last, First, <any other info>)
             first application I found for it.
 
 
-            Released Under Apache License 2.0 (info below code, line 106)
+            Released Under Apache License 2.0 (See ReadMe)
 """
 
 
@@ -28,6 +28,19 @@ import random
 import os
 import errno
 
+# DEFAULTS
+DEF_SEATS = 8
+DEF_FILEOUT = "out"
+DEF_OUTDIR = "TableListings/"
+
+# SETTINGS
+"""
+Output modes:
+    0 - Default. Writes to inputted csv file name
+    1 - Prints in terminal
+"""
+OUT_MODE = 0
+
 def make_sure_path_exists(path):
     """
     Creates directory if it doesn't exist, cross-platform.
@@ -40,30 +53,55 @@ https://stackoverflow.com/questions/273192/how-can-i-create-a-directory-if-it-do
         if exception.errno != errno.EEXIST:
             raise
 
-### DEFAULT OUTPUT DIRECTORY
-DEF_OUT = "TableListings/"
+def validateInput(outfile, seed, seatsPerTable):
+    """
+    Inputs default values if none are specified.
+    """
+    if outfile == "":
+        outfile = DEF_FILEOUT
+
+    if seed == "":
+        seed = str(datetime.now())
+
+    if seatsPerTable == "" or not seatsPerTable.isnumeric():
+        seatsPerTable = DEF_SEATS
+    else:
+        seatsPerTable = abs(int(seatsPerTable))
+
+    return outfile, seed, seatsPerTable
+
+def allocateTable(name, tables, numTables):
+                # Hash the names with the 'random' integer
+                nameKey = hashlib.md5((name +
+                        str(random.randint(0, 100000))).encode())
+                nameKey = int(nameKey.hexdigest(), 16) % numTables
+
+                # Probe the tables until you find one that has a spare space.
+                # Guaranteed to be a spare space as we took the ceiling of
+                # names/seatsPerTable
+                while len(tables[nameKey]) >= seatsPerTable:
+                    nameKey = (nameKey + 1) % numTables
+                tables[nameKey].append(name)
+
+# ****** MAIN *******
 
 # *** Initialise randomiser ***
 filename = input("Enter your names list file name: ")
-output = input("Enter a file to write to: ")
+if OUT_MODE == 0:
+    output = input("Enter a file to write to: ")
 
-try:
-    MAX_SEATS = abs(int(input("Enter the number of seats per table: ")))
-except:
-    MAX_SEATS = 8
-
+seatsPerTable = input("Enter the number of seats per table: ")
 manSeed = input("Enter a seed for the randomiser (Blank input can't be reproduced): ")
 
-if output == "":
-    output = "out"
-
-if manSeed == "":
-    manSeed = str(datetime.now())
+output = validateInput(output, manSeed, seatsPerTable)[0]
+manSeed = validateInput(output, manSeed, seatsPerTable)[1]
+seatsPerTable = validateInput(output, manSeed, seatsPerTable)[2]
 
 random.seed(manSeed)
 tables = defaultdict(list)
+invitedList = []
 
-# ***** READ IN AND HASH ***************
+# ***** READ IN ***************
 # Will complain if anything doesn't work.
 try:
     # Work out how many people you have coming
@@ -72,7 +110,7 @@ try:
 
         # Work out how many tables will be needed,
         # then start reading  the file.
-        numTables = ceil(numRows / MAX_SEATS)
+        numTables = ceil(numRows / seatsPerTable)
         nameReader = csv.reader(csvfile)
 
         # Skip the header line
@@ -83,36 +121,35 @@ try:
         # '#'s if the names are already one field in the csv.)
             row = row[0:2]
             name = ' '.join(row[::-1])
-
-            # Hash the names with the 'random' integer
-            nameKey = hashlib.md5((name +
-                    str(random.randint(0, 100000))).encode())
-            nameKey = int(nameKey.hexdigest(), 16) % numTables
-
-            # Probe the tables until you find one that has a spare space.
-            # Guaranteed to be a spare space as we took the ceiling of
-            # names/seatsPerTable
-            while len(tables[nameKey]) >= MAX_SEATS:
-                nameKey = (nameKey + 1) % numTables
-            tables[nameKey].append(name)
+            invitedList.append(name)
 
 except:
     print("Error! ", sys.exc_info()[1])
+    exit()
+
+# **************** ALLOCATE *************
+for name in invitedList:
+    allocateTable(name, tables, numTables)
 
 # *************** OUTPUT ****************
-make_sure_path_exists(DEF_OUT)
-try:
-    with open(DEF_OUT + output + ".csv", 'w') as csvfile:
-        tableWriter = csv.writer(csvfile)
-        # Change Student to whatever you like if not using this where Student
-        # would be appropriate
-        tableWriter.writerow(["Table Number"] + ["Student"] * MAX_SEATS)
-        tableNum = 1
-        for table in tables.values():
-            tableWriter.writerow([tableNum] + table)
-            tableNum += 1
-except:
-    print("Error! ", sys.exc_info()[1])
+if OUT_MODE == 0:
+    make_sure_path_exists(DEF_OUTDIR)
+    try:
+        with open(DEF_OUTDIR + output + ".csv", 'w') as csvfile:
+            tableWriter = csv.writer(csvfile)
+            # Change Student to whatever you like if not using this where Student
+            # would be appropriate
+            tableWriter.writerow(["Table Number"] + ["Student"] * seatsPerTable)
+            tableNum = 1
+            for table in tables.values():
+                tableWriter.writerow([tableNum] + table)
+                tableNum += 1
+    except:
+        print("Error! ", sys.exc_info()[1])
+
+elif OUT_MODE == 1:
+    for table in tables.items():
+        print(table)
 
 print("Done!!")
 
