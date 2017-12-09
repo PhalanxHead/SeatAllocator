@@ -119,7 +119,8 @@ try:
         for row in nameReader:
         # String all of the names together correctly (Comment this out with
         # '#'s if the names are already one field in the csv.)
-            row = row[0:2]
+            if row[2] != "":
+                continue
             name = ' '.join(row[::-1])
             invitedList.append(name)
 

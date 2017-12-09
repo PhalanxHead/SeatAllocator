@@ -1,10 +1,10 @@
-LastName,FirstName
-Smith,John
-Snow,Jon
-Stark,Ned
-Targaryen,Rhaenys
-Targaryen,Viserys
-Shadeslayer,Eragon
-Jackson,Perseus
-Chase,Annabeth
-Grace,Thalia
+LastName,FirstName,TableNum
+Smith,John,
+Snow,Jon,
+Stark,Ned,
+Targaryen,Rhaenys,
+Targaryen,Viserys,
+Shadeslayer,Eragon,
+Jackson,Perseus,
+Chase,Annabeth,High Table
+Grace,Thalia,
