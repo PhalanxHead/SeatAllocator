@@ -13,7 +13,7 @@ A table allocator that (roughly) randomises the people on tables.
    $ python3 seatAllocator.py
    ```
 
-3. As per the prompt, enter the location of your list of names. My csv files are formatted as in the example `example.csv`, that is, (lastname, firstname) (other information is discarded), but you can edit the code to fit yours if you need. See **Config**
+3. As per the prompt, enter the location of your list of names. My csv files are formatted as in the example `example.csv`, that is, (lastName, firstName, tableNumber) (Guests with table numbers already given will be ignored), but you can edit the code to fit yours if you need. See **Config**
 
 4. As per the prompt, enter the name of the file you want to save the new lists in. By default, the program will create an output folder called "TableListings", and save into a file called "tables.csv" if no file is entered.
 
@@ -42,7 +42,7 @@ Changing this to a 1 will no longer write to a csv file, but simple print the ou
 
 3.
 ```Python
-96 tableWriter.writerow(["Table Number"] + ["Student"] * MAX_SEATS)
+145 tableWriter.writerow(["Table Number"] + ["Student"] * MAX_SEATS)
 ```
 
 This really just makes the header row but if you're not dealing with tables of students, it doesn't make too much sense to make columns with these labels.

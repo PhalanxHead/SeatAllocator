@@ -119,6 +119,7 @@ try:
         for row in nameReader:
         # String all of the names together correctly (Comment this out with
         # '#'s if the names are already one field in the csv.)
+            # Skip guests with pre-determined tables!
             if row[2] != "":
                 continue
             name = ' '.join(row[::-1])
