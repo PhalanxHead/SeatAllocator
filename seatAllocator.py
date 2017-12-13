@@ -4,10 +4,10 @@
 Author:     PhalanxHead
 Date:       30/09/2017
 Name:       seatAllocator.py
-Purpose:    Takes a csv file of names (Last, First, <any other info>)
+Purpose:    Takes a CSV file of names (Last, First, <any other info>)
             and outputs a list of semi-random groups using MD5 hashing and
             a seed (which was taken from the user).
-            Writes to a csv file.
+            Writes to a CSV file.
 
             Applicable to more than just seating at tables but it's the
             first application I found for it.
@@ -30,8 +30,8 @@ import errno
 
 # DEFAULTS
 DEF_SEATS = 8
-DEF_FILEOUT = "out"
-DEF_OUTDIR = "TableListings/"
+DEF_FILEOUT = "Tables"
+DEF_OUTDIR = "TableForm/"
 
 # SETTINGS
 """
