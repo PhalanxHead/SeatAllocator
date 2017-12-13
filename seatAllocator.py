@@ -28,12 +28,12 @@ import random
 import os
 import errno
 
-# DEFAULTS
+# *** DEFAULTS ***
 DEF_SEATS = 8
 DEF_FILEOUT = "Tables"
 DEF_OUTDIR = "TableForm/"
 
-# SETTINGS
+# *** SETTINGS ***
 """
 Output modes:
     0 - Default. Writes to inputted csv file name
