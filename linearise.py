@@ -6,7 +6,7 @@ Date:       13/12/2017
 Name:       linearise.py
 Purpose:    Takes the output CSV of the seatAllocator program (or a slightly
             modified version of it) and rearranges it to be in the format of
-            the initial file given (ie: lastName, firstName, tableNumber).
+            the initial file given (ie: (lastName, firstName, tableNumber)).
 
             Writes back to a CSV file.
 
@@ -44,6 +44,7 @@ def findTable(name, tableFile):
     found. Returns the table number the name was found on.
     """
 
+    # Add default if necessary
     if "\\" not in tableFile and "/" not in tableFile:
         tableFile = DEF_TABLEDIR + tableFile
 
@@ -69,12 +70,20 @@ listFile = input("Enter your initial list file name: ")
 tableFile = input("Enter your table file name: ")
 outFile = input("Enter a file to write to: ")
 
+if outFile == "":
+    outFile = DEF_FILEOUT
+
 try:
     # Open all the read-in files
     with open(listFile, 'r') as lf:
+
         # Create the new outFile
-        make_sure_path_exists(DEF_OUTDIR)
-        with open(DEF_OUTDIR + outFile + ".csv", 'w') as of:
+        # Add default if necessary
+        if "\\" not in outFile and "/" not in outFile:
+            outFile = DEF_OUTDIR + outFile
+        # Create Path if necessary
+        make_sure_path_exists(outFile.rpartition('/')[0])
+        with open(outFile + ".csv", 'w') as of:
 
             lfReader = csv.reader(lf)
             ofWriter = csv.writer(of)
@@ -93,7 +102,7 @@ except:
     print("Error! ", sys.exc_info()[1])
 
 print("Done!!!")
-print("Output at ", DEF_OUTDIR + outFile + ".csv")
+print("Output at ", outFile + ".csv")
 
 """
             Licensing Info:

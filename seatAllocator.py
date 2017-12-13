@@ -2,7 +2,7 @@
 
 """
 Author:     PhalanxHead
-Date:       30/09/2017
+Date:       30/09/2017 - 13/12/2017
 Name:       seatAllocator.py
 Purpose:    Takes a CSV file of names (Last, First, <any other info>)
             and outputs a list of semi-random groups using MD5 hashing and
@@ -88,14 +88,16 @@ def allocateTable(name, tables, numTables):
 # *** Initialise randomiser ***
 filename = input("Enter your names list file name: ")
 if OUT_MODE == 0:
-    output = input("Enter a file to write to: ")
+    outFile = input("Enter a file to write to: ")
 
 seatsPerTable = input("Enter the number of seats per table: ")
 manSeed = input("Enter a seed for the randomiser (Blank input can't be reproduced): ")
 
-output = validateInput(output, manSeed, seatsPerTable)[0]
-manSeed = validateInput(output, manSeed, seatsPerTable)[1]
-seatsPerTable = validateInput(output, manSeed, seatsPerTable)[2]
+validIn = validateInput(outFile, manSeed, seatsPerTable)
+
+outFile =validIn[0]
+manSeed = validIn[1]
+seatsPerTable = validIn[2]
 
 random.seed(manSeed)
 tables = defaultdict(list)
@@ -104,8 +106,14 @@ invitedList = []
 # ***** READ IN ***************
 # Will complain if anything doesn't work.
 try:
-    # Work out how many people you have coming
-    numRows = sum(1 for line in open(filename))
+    # Work out how many people you have coming that need a table number
+    # Clunky, I know
+    numRows = 0
+    with open(filename) as csvfile:
+        for row in csvfile:
+            if row[2] != "":
+                numRows += 1
+
     with open(filename) as csvfile:
 
         # Work out how many tables will be needed,
@@ -135,9 +143,15 @@ for name in invitedList:
 
 # *************** OUTPUT ****************
 if OUT_MODE == 0:
-    make_sure_path_exists(DEF_OUTDIR)
+
+    # Add default if necessary
+    if "\\" not in outFile and "/" not in outFile:
+        outFile = DEF_OUTDIR + outFile
+
+    make_sure_path_exists(outFile.rpartition('/')[0])
+
     try:
-        with open(DEF_OUTDIR + output + ".csv", 'w') as csvfile:
+        with open(outFile + ".csv", 'w') as csvfile:
             tableWriter = csv.writer(csvfile)
             # Change Student to whatever you like if not using this where Student
             # would be appropriate
@@ -154,6 +168,7 @@ elif OUT_MODE == 1:
         print(table)
 
 print("Done!!")
+print("Output at ", outFile + ".csv")
 
 """
             Licensing Info:
