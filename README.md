@@ -14,7 +14,7 @@ A table allocator that (roughly) randomises the people on tables.
 
 3. As per the prompt, enter the location of your list of names. My csv files are formatted as in the example `example.csv`, that is, (lastName, firstName, tableNumber) (Guests with table numbers already given will be ignored), but you can edit the code to fit yours if you need.
 
-4. As per the prompt, enter the name of the file you want to save the new lists in. By default, the program will create an output folder called "TableForm/",  <u>\*</u> and save into a file called "Tables.csv" if no file is entered.
+4. As per the prompt, enter the name of the file you want to save the new lists in. By default, the program will create an output folder called "TableForm/",  <u>*</u> and save into a file called "Tables.csv" if no file is entered.
 
     ###### <u>NOTE: You don't need to add the `.csv` to the file name, the program does this automatically.</u>
 
@@ -37,7 +37,7 @@ $ python3 linearise.py
 
 5. Any names the program can't find for whatever reason will be on table number 0. This is a good indicator that something went wrong.
 
-<u>\*</u> (If no folder is given. Use `./<name> ` to specify the current directory)
+<u>*</u> (If no folder is given. Use `./<name> ` to specify the current directory)
 
 
 
