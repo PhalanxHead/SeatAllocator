@@ -137,6 +137,9 @@ except:
     print("Error! ", sys.exc_info()[1])
     exit()
 
+# Randomise the list of names
+random.shuffle(invitedList)
+
 # **************** ALLOCATE *************
 for name in invitedList:
     allocateTable(name, tables, numTables)
